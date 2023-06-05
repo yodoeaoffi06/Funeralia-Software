@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 -- Base de datos: `funeralia`
 --
 
+CREATE DATABASE funeralia;
+USE funeralia;
 -- --------------------------------------------------------
 
 --
