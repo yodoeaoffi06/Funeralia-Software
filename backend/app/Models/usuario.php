@@ -21,6 +21,10 @@ class usuario extends Model
         'contraseña'
     ];
 
+    protected $hidden = [
+        'remember_token'
+    ];
+
     public function tipo_usuario()
     {
 
