@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-06-2023 a las 04:27:34
+-- Tiempo de generación: 06-06-2023 a las 16:30:06
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -23,6 +23,7 @@ SET time_zone = "+00:00";
 
 CREATE DATABASE funeralia;
 USE funeralia;
+
 -- --------------------------------------------------------
 
 --
@@ -34,6 +35,7 @@ CREATE TABLE `asignacion` (
   `id_trabajador` int(11) NOT NULL COMMENT 'Identificador del trabajador',
   `id_servicio` int(11) NOT NULL COMMENT 'Identificador del servicio',
   `creates_at` datetime DEFAULT current_timestamp() COMMENT 'Fecha de creación de la asignación',
+  `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL COMMENT 'Fecha de eliminación de la asignación'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -49,6 +51,7 @@ CREATE TABLE `cliente` (
   `telefono` varchar(10) NOT NULL COMMENT 'Teléfono del cliente',
   `direccion` varchar(255) NOT NULL COMMENT 'Dirección del cliente',
   `created_at` timestamp NULL DEFAULT current_timestamp() COMMENT 'Fecha de creación del cliente',
+  `updated_at` datetime DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL COMMENT 'Fecha de eliminación del cliente'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -62,8 +65,16 @@ CREATE TABLE `gerente` (
   `id_gerente` int(11) NOT NULL COMMENT 'Identificador del gerente',
   `id_usuario` int(11) NOT NULL COMMENT 'Identificador del usuario',
   `created_at` datetime DEFAULT current_timestamp() COMMENT 'Fecha de creación del gerente',
+  `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL COMMENT 'Fecha de elim,inación del gerente'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `gerente`
+--
+
+INSERT INTO `gerente` (`id_gerente`, `id_usuario`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(5, 9, '2023-06-05 23:03:27', '2023-06-05 23:03:27', NULL);
 
 -- --------------------------------------------------------
 
@@ -76,6 +87,7 @@ CREATE TABLE `mobiliario` (
   `nombre` varchar(255) NOT NULL COMMENT 'Nombre del mobiliario',
   `descripcion` varchar(255) NOT NULL COMMENT 'Descripción del mobiliario',
   `created_at` datetime DEFAULT current_timestamp() COMMENT 'Fecha de creación del mobiliario',
+  `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL COMMENT 'Fecha de eliminación del mobiliario'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -90,6 +102,7 @@ CREATE TABLE `mobiliario_total` (
   `id_mobiliario` int(11) NOT NULL COMMENT 'Identificador del mobiliario',
   `cantidad` smallint(6) NOT NULL COMMENT 'Cantidad del mobiliario',
   `creates_at` datetime NOT NULL COMMENT 'Fecha de creación del mobiliario total',
+  `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime NOT NULL COMMENT 'Fecha de eliminación del mobiliario total'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -103,8 +116,17 @@ CREATE TABLE `secretaria` (
   `id_secretaria` int(11) NOT NULL COMMENT 'Identificador de la secretaria',
   `id_usuario` int(11) NOT NULL COMMENT 'Identificador del usuario',
   `created_at` datetime DEFAULT current_timestamp() COMMENT 'Fecha de creación de la secretaria',
+  `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL COMMENT 'Fecha de eliminación de la secretaría'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `secretaria`
+--
+
+INSERT INTO `secretaria` (`id_secretaria`, `id_usuario`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(2, 10, '2023-06-05 23:08:06', '2023-06-05 23:08:06', NULL),
+(3, 11, '2023-06-06 00:25:51', '2023-06-06 00:25:51', NULL);
 
 -- --------------------------------------------------------
 
@@ -120,6 +142,7 @@ CREATE TABLE `servicio` (
   `fecha_entrega` date NOT NULL COMMENT 'Fecha de ebtrega del servicio',
   `fecha_recogida` date NOT NULL COMMENT 'Fecha de recogida del servicio',
   `created_at` int(11) DEFAULT current_timestamp() COMMENT 'Fecha de creación del servicio',
+  `updated_at` datetime DEFAULT NULL,
   `deleted_at` int(11) DEFAULT NULL COMMENT 'Fecha de eliminación del servicio'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -133,6 +156,7 @@ CREATE TABLE `tipo_usuario` (
   `id_tipo` int(11) NOT NULL COMMENT 'Identificador del tipo',
   `tipo` varchar(255) NOT NULL COMMENT 'Nombre del tipo',
   `created_at` datetime DEFAULT current_timestamp() COMMENT 'Fecha de creación del tipo',
+  `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL COMMENT 'Fecha de eliminación del tipo'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -140,10 +164,10 @@ CREATE TABLE `tipo_usuario` (
 -- Volcado de datos para la tabla `tipo_usuario`
 --
 
-INSERT INTO `tipo_usuario` (`id_tipo`, `tipo`, `created_at`, `deleted_at`) VALUES
-(1, 'Gerente', '2023-06-04 20:18:03', NULL),
-(2, 'Secretaria', '2023-06-04 20:18:20', NULL),
-(3, 'Trabajador', '2023-06-04 20:18:35', NULL);
+INSERT INTO `tipo_usuario` (`id_tipo`, `tipo`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Gerente', '2023-06-04 20:18:03', NULL, NULL),
+(2, 'Secretaria', '2023-06-04 20:18:20', NULL, NULL),
+(3, 'Trabajador', '2023-06-04 20:18:35', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -155,6 +179,7 @@ CREATE TABLE `trabajador` (
   `id_trabajador` int(11) NOT NULL COMMENT 'Identificador del trabajador',
   `id_usuario` int(11) NOT NULL COMMENT 'Identificador del usuario',
   `created_at` datetime DEFAULT current_timestamp() COMMENT 'Fecha de creación de del trabajador',
+  `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL COMMENT 'Fecha de eliminación del trabajador'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -171,11 +196,22 @@ CREATE TABLE `usuario` (
   `ap_mat` varchar(255) NOT NULL COMMENT 'Apellido materno del usuario',
   `telefono` char(10) NOT NULL,
   `id_tipo` int(11) NOT NULL,
-  `contraseña` varchar(10) NOT NULL COMMENT 'Contraseña del usuario',
+  `email` varchar(100) NOT NULL,
+  `password` varchar(100) NOT NULL COMMENT 'Contraseña del usuario',
   `created_at` datetime DEFAULT current_timestamp() COMMENT 'Fecha de creación del usuario',
+  `updated_at` datetime DEFAULT NULL COMMENT 'Fecha de Actualización del usuario',
   `deleted_at` datetime DEFAULT NULL COMMENT 'Fecha de eliminación del usuario',
   `remember_token` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`id_usuario`, `nombre`, `ap_pat`, `ap_mat`, `telefono`, `id_tipo`, `email`, `password`, `created_at`, `updated_at`, `deleted_at`, `remember_token`) VALUES
+(9, 'Yadhir', 'Teobal', 'Villacruz', '2299685317', 1, 'yadhirtv@gmail.com', '$2y$10$GyAMOZRm0Xz8V66XH3fgmO3rbmNXJvDRq2g1wmoKwC92EllFy6kIG', '2023-06-05 23:03:27', '2023-06-05 23:04:54', NULL, NULL),
+(10, 'a', 'b', 'c', '1234567890', 2, 'abc@gmail.com', '$2y$10$PT63NGJQTSwzQN6ap6cAa.vIKJmP19szWKeBDmORE5bCKX/MSXjti', '2023-06-05 23:08:06', '2023-06-05 23:08:06', NULL, NULL),
+(11, 'Yodo', 'De Jesus', 'Almeda', '2536555789', 2, 'yadhirTV2@gmail.com', '$2y$10$rDTugpf/ADnIRJBGbQBEMuyktbU2jMzeP6.xmhDkGkOSP3lQYCqsS', '2023-06-06 00:25:51', '2023-06-06 00:25:51', NULL, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -270,7 +306,7 @@ ALTER TABLE `cliente`
 -- AUTO_INCREMENT de la tabla `gerente`
 --
 ALTER TABLE `gerente`
-  MODIFY `id_gerente` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador del gerente';
+  MODIFY `id_gerente` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador del gerente', AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `mobiliario`
@@ -288,7 +324,7 @@ ALTER TABLE `mobiliario_total`
 -- AUTO_INCREMENT de la tabla `secretaria`
 --
 ALTER TABLE `secretaria`
-  MODIFY `id_secretaria` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador de la secretaria';
+  MODIFY `id_secretaria` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador de la secretaria', AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `servicio`
@@ -306,13 +342,13 @@ ALTER TABLE `tipo_usuario`
 -- AUTO_INCREMENT de la tabla `trabajador`
 --
 ALTER TABLE `trabajador`
-  MODIFY `id_trabajador` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador del trabajador';
+  MODIFY `id_trabajador` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador del trabajador', AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador del usuario';
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador del usuario', AUTO_INCREMENT=12;
 
 --
 -- Restricciones para tablas volcadas
@@ -329,7 +365,7 @@ ALTER TABLE `asignacion`
 -- Filtros para la tabla `gerente`
 --
 ALTER TABLE `gerente`
-  ADD CONSTRAINT `FK_USUARIO` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `FK_USUARIO` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `mobiliario_total`
@@ -341,7 +377,7 @@ ALTER TABLE `mobiliario_total`
 -- Filtros para la tabla `secretaria`
 --
 ALTER TABLE `secretaria`
-  ADD CONSTRAINT `secretaria_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `secretaria_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `servicio`
@@ -354,7 +390,7 @@ ALTER TABLE `servicio`
 -- Filtros para la tabla `trabajador`
 --
 ALTER TABLE `trabajador`
-  ADD CONSTRAINT `trabajador_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `trabajador_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `usuario`
