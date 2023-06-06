@@ -32,4 +32,11 @@ Route::prefix('f')->group(function () {
         Route::get('get-users/{id_tipo}', 'App\Http\Controllers\UserManagementController@getUsers');
         Route::get('get-user-types', 'App\Http\Controllers\UserManagementController@getUserTypes');
     })->middleware('auth:api');
+
+    Route::prefix('services')->group(function () {
+        Route::post('create-client', 'App\Http\Controllers\ServicesController@createClient');
+        Route::post('create-service', 'App\Http\Controllers\ServicesController@createService');
+        Route::post('generate-mobilary', 'App\Http\Controllers\ServicesController@generateMobilary');
+        Route::get('service-info/{id_servicio}', 'App\Http\Controllers\ServicesController@getServiceInformation');
+    })->middleware('auth:api');
 });

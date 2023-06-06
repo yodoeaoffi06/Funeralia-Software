@@ -14,6 +14,12 @@ class mobiliario extends Model
 
     protected $fillable = [
         'nombre',
-        'descripcion'
+        'id_tipo_servicio'
     ];
+
+    public function tipo_servicio()
+    {
+
+        return $this->belongsTo(tipo_servicio::class, 'id_tipo_servicio');
+    }
 }
