@@ -14,7 +14,8 @@ class mobiliario_total extends Model
 
     protected $fillable = [
         'id_mobiliario',
-        'cantidad'
+        'cantidad',
+        'id_servicio'
     ];
 
     public function mobiliario()

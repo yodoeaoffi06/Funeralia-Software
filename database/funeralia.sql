@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-06-2023 a las 16:30:06
+-- Tiempo de generación: 07-06-2023 a las 00:38:16
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -47,13 +47,20 @@ CREATE TABLE `asignacion` (
 
 CREATE TABLE `cliente` (
   `id_cliente` int(11) NOT NULL COMMENT 'Identificador del cliente',
-  `nombre` int(11) NOT NULL COMMENT 'Nombre completo del cliente',
+  `nombre` varchar(100) NOT NULL COMMENT 'Nombre completo del cliente',
   `telefono` varchar(10) NOT NULL COMMENT 'Teléfono del cliente',
   `direccion` varchar(255) NOT NULL COMMENT 'Dirección del cliente',
-  `created_at` timestamp NULL DEFAULT current_timestamp() COMMENT 'Fecha de creación del cliente',
+  `created_at` datetime DEFAULT current_timestamp() COMMENT 'Fecha de creación del cliente',
   `updated_at` datetime DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL COMMENT 'Fecha de eliminación del cliente'
+  `deleted_at` datetime DEFAULT NULL COMMENT 'Fecha de eliminación del cliente'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `cliente`
+--
+
+INSERT INTO `cliente` (`id_cliente`, `nombre`, `telefono`, `direccion`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Yadhir', '299685317', 'Calle real', '2023-06-06 15:28:18', '2023-06-06 15:28:18', NULL);
 
 -- --------------------------------------------------------
 
@@ -85,11 +92,28 @@ INSERT INTO `gerente` (`id_gerente`, `id_usuario`, `created_at`, `updated_at`, `
 CREATE TABLE `mobiliario` (
   `id_mobiliario` int(11) NOT NULL COMMENT 'Identificador del mobiliario',
   `nombre` varchar(255) NOT NULL COMMENT 'Nombre del mobiliario',
-  `descripcion` varchar(255) NOT NULL COMMENT 'Descripción del mobiliario',
+  `id_tipo_servicio` int(11) NOT NULL,
   `created_at` datetime DEFAULT current_timestamp() COMMENT 'Fecha de creación del mobiliario',
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL COMMENT 'Fecha de eliminación del mobiliario'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `mobiliario`
+--
+
+INSERT INTO `mobiliario` (`id_mobiliario`, `nombre`, `id_tipo_servicio`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(12, 'Ataud de Peluchin', 1, '2023-06-06 15:38:15', NULL, NULL),
+(13, 'Ataud de Metal', 1, '2023-06-06 15:38:15', NULL, NULL),
+(14, 'Ataud de Madera', 1, '2023-06-06 15:38:15', NULL, NULL),
+(15, 'Equipo de Velacion', 1, '2023-06-06 15:38:15', NULL, NULL),
+(16, 'Silla de Plastico Blanca', 1, '2023-06-06 15:38:15', NULL, NULL),
+(17, 'Carpas 5x5', 1, '2023-06-06 15:38:15', NULL, NULL),
+(18, 'Carpas 10x15', 2, '2023-06-06 15:38:15', NULL, NULL),
+(19, 'Mesas Plegables', 2, '2023-06-06 15:38:15', NULL, NULL),
+(20, 'Sillas Plegables Azules', 2, '2023-06-06 15:38:15', NULL, NULL),
+(21, 'Manteles Blancos ', 2, '2023-06-06 15:38:15', NULL, NULL),
+(22, 'Rocola', 2, '2023-06-06 15:38:15', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -101,10 +125,18 @@ CREATE TABLE `mobiliario_total` (
   `id_mobiliario_total` int(11) NOT NULL COMMENT 'Identificador del mobiliario total',
   `id_mobiliario` int(11) NOT NULL COMMENT 'Identificador del mobiliario',
   `cantidad` smallint(6) NOT NULL COMMENT 'Cantidad del mobiliario',
-  `creates_at` datetime NOT NULL COMMENT 'Fecha de creación del mobiliario total',
+  `id_servicio` int(11) NOT NULL,
+  `created_at` datetime NOT NULL COMMENT 'Fecha de creación del mobiliario total',
   `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime NOT NULL COMMENT 'Fecha de eliminación del mobiliario total'
+  `deleted_at` datetime DEFAULT NULL COMMENT 'Fecha de eliminación del mobiliario total'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `mobiliario_total`
+--
+
+INSERT INTO `mobiliario_total` (`id_mobiliario_total`, `id_mobiliario`, `cantidad`, `id_servicio`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 18, 1, 4, '2023-06-06 17:14:49', '2023-06-06 17:14:49', NULL);
 
 -- --------------------------------------------------------
 
@@ -120,14 +152,6 @@ CREATE TABLE `secretaria` (
   `deleted_at` datetime DEFAULT NULL COMMENT 'Fecha de eliminación de la secretaría'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Volcado de datos para la tabla `secretaria`
---
-
-INSERT INTO `secretaria` (`id_secretaria`, `id_usuario`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(2, 10, '2023-06-05 23:08:06', '2023-06-05 23:08:06', NULL),
-(3, 11, '2023-06-06 00:25:51', '2023-06-06 00:25:51', NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -137,14 +161,42 @@ INSERT INTO `secretaria` (`id_secretaria`, `id_usuario`, `created_at`, `updated_
 CREATE TABLE `servicio` (
   `id_servicio` int(11) NOT NULL COMMENT 'Identificador del servicio',
   `id_cliente` int(11) NOT NULL COMMENT 'Identificador del cliente',
-  `id_mobiliario_total` int(11) NOT NULL COMMENT 'Itenficiador del mobiliario total',
-  `tipo_servicio` varchar(255) NOT NULL COMMENT 'Tipo del servicio',
+  `id_tipo_servicio` int(11) NOT NULL,
   `fecha_entrega` date NOT NULL COMMENT 'Fecha de ebtrega del servicio',
   `fecha_recogida` date NOT NULL COMMENT 'Fecha de recogida del servicio',
-  `created_at` int(11) DEFAULT current_timestamp() COMMENT 'Fecha de creación del servicio',
+  `created_at` datetime DEFAULT current_timestamp() COMMENT 'Fecha de creación del servicio',
   `updated_at` datetime DEFAULT NULL,
-  `deleted_at` int(11) DEFAULT NULL COMMENT 'Fecha de eliminación del servicio'
+  `deleted_at` datetime DEFAULT NULL COMMENT 'Fecha de eliminación del servicio'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `servicio`
+--
+
+INSERT INTO `servicio` (`id_servicio`, `id_cliente`, `id_tipo_servicio`, `fecha_entrega`, `fecha_recogida`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(4, 1, 2, '2023-06-06', '2023-06-08', '2023-06-06 16:50:17', '2023-06-06 16:50:17', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipo_servicio`
+--
+
+CREATE TABLE `tipo_servicio` (
+  `id_tipo_servicio` int(11) NOT NULL,
+  `tipo` varchar(100) NOT NULL,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `tipo_servicio`
+--
+
+INSERT INTO `tipo_servicio` (`id_tipo_servicio`, `tipo`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Fúnebre', '2023-06-06 15:27:47', NULL, NULL),
+(2, 'Eventos', '2023-06-06 15:27:47', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -242,14 +294,16 @@ ALTER TABLE `gerente`
 -- Indices de la tabla `mobiliario`
 --
 ALTER TABLE `mobiliario`
-  ADD PRIMARY KEY (`id_mobiliario`);
+  ADD PRIMARY KEY (`id_mobiliario`),
+  ADD KEY `FK_TIPO_SERVICIO` (`id_tipo_servicio`);
 
 --
 -- Indices de la tabla `mobiliario_total`
 --
 ALTER TABLE `mobiliario_total`
   ADD PRIMARY KEY (`id_mobiliario_total`),
-  ADD UNIQUE KEY `FK_MOBILIARIO` (`id_mobiliario`);
+  ADD UNIQUE KEY `FK_MOBILIARIO` (`id_mobiliario`),
+  ADD KEY `FK_SERVICIO` (`id_servicio`);
 
 --
 -- Indices de la tabla `secretaria`
@@ -263,8 +317,14 @@ ALTER TABLE `secretaria`
 --
 ALTER TABLE `servicio`
   ADD PRIMARY KEY (`id_servicio`),
-  ADD KEY `FK_CLIENTE` (`id_cliente`),
-  ADD KEY `FK_MOBILIARIO_TOTAL` (`id_mobiliario_total`);
+  ADD KEY `id_cliente` (`id_cliente`),
+  ADD KEY `id_tipo_servicio` (`id_tipo_servicio`);
+
+--
+-- Indices de la tabla `tipo_servicio`
+--
+ALTER TABLE `tipo_servicio`
+  ADD PRIMARY KEY (`id_tipo_servicio`);
 
 --
 -- Indices de la tabla `tipo_usuario`
@@ -300,7 +360,7 @@ ALTER TABLE `asignacion`
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador del cliente';
+  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador del cliente', AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `gerente`
@@ -312,13 +372,13 @@ ALTER TABLE `gerente`
 -- AUTO_INCREMENT de la tabla `mobiliario`
 --
 ALTER TABLE `mobiliario`
-  MODIFY `id_mobiliario` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador del mobiliario';
+  MODIFY `id_mobiliario` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador del mobiliario', AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de la tabla `mobiliario_total`
 --
 ALTER TABLE `mobiliario_total`
-  MODIFY `id_mobiliario_total` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador del mobiliario total';
+  MODIFY `id_mobiliario_total` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador del mobiliario total', AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `secretaria`
@@ -330,7 +390,13 @@ ALTER TABLE `secretaria`
 -- AUTO_INCREMENT de la tabla `servicio`
 --
 ALTER TABLE `servicio`
-  MODIFY `id_servicio` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador del servicio';
+  MODIFY `id_servicio` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador del servicio', AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `tipo_servicio`
+--
+ALTER TABLE `tipo_servicio`
+  MODIFY `id_tipo_servicio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `tipo_usuario`
@@ -368,10 +434,17 @@ ALTER TABLE `gerente`
   ADD CONSTRAINT `FK_USUARIO` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
+-- Filtros para la tabla `mobiliario`
+--
+ALTER TABLE `mobiliario`
+  ADD CONSTRAINT `mobiliario_ibfk_1` FOREIGN KEY (`id_tipo_servicio`) REFERENCES `tipo_servicio` (`id_tipo_servicio`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
 -- Filtros para la tabla `mobiliario_total`
 --
 ALTER TABLE `mobiliario_total`
-  ADD CONSTRAINT `FK_MOBILIARIO` FOREIGN KEY (`id_mobiliario`) REFERENCES `mobiliario` (`id_mobiliario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `FK_MOBILIARIO` FOREIGN KEY (`id_mobiliario`) REFERENCES `mobiliario` (`id_mobiliario`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `mobiliario_total_ibfk_1` FOREIGN KEY (`id_servicio`) REFERENCES `servicio` (`id_servicio`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `secretaria`
@@ -383,8 +456,8 @@ ALTER TABLE `secretaria`
 -- Filtros para la tabla `servicio`
 --
 ALTER TABLE `servicio`
-  ADD CONSTRAINT `FK_CLIENTE` FOREIGN KEY (`id_cliente`) REFERENCES `usuario` (`id_usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_MOBILIARIO_TOTAL` FOREIGN KEY (`id_mobiliario_total`) REFERENCES `mobiliario_total` (`id_mobiliario_total`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `servicio_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `servicio_ibfk_2` FOREIGN KEY (`id_tipo_servicio`) REFERENCES `tipo_servicio` (`id_tipo_servicio`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `trabajador`
