@@ -14,8 +14,7 @@ class servicio extends Model
 
     protected $fillable = [
         'id_cliente',
-        'id_mobiliario_total',
-        'tipo_servicio',
+        'id_tipo_servicio',
         'fecha_entrega',
         'fecha_recogida'
     ];
@@ -26,9 +25,9 @@ class servicio extends Model
         return $this->belongsTo(cliente::class, 'id_cliente');
     }
 
-    public function mobiliario_total()
+    public function tipo_servicio()
     {
 
-        return $this->belongsTo(mobiliario_total::class, 'id_mobiliario_total');
+        return $this->belongsTo(tipo_servicio::class, 'id_tipo_servicio');
     }
 }
