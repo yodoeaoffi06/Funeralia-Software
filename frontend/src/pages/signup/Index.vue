@@ -136,6 +136,7 @@
 </template>
 
 <script>
+import dataService from 'src/services/generalService';
 export default {
   name: 'IndexSignup',
   data() {
@@ -159,6 +160,38 @@ export default {
 
   methods: {
     onSubmit() {
+      this.loading = true;
+
+      var data = {
+        email: this.email.replace(/<[^>]*>?/gm, ""),
+        nombre: this.name.replace(/<[^>]*>?/gm, ""),
+        ap_pat: this.apat.replace(/<[^>]*>?/gm, ""),
+        ap_mat: this.amat.replace(/<[^>]*>?/gm, ""),
+        num_telefono: this.num.replace(/<[^>]*>?/gm, ""),
+        password: this.pwd.replace(/<[^>]*>?/gm, ""),
+        id_tipo: 1,
+      };
+
+      dataService.create("user-management/create-user", data). then((response) => {
+        this.$q.notify({
+          color: "positive",
+          textColor: "white",
+          icon: "done",
+          message: "¡Se ha registrado exitosamente!",
+        });
+        console.log(data);
+        console.log(response);
+        this.loading = false;
+        this.$router.push(`/login`, () => {});
+      }).catch((error) => {
+        this.loading = false;
+        this.$q.notify({
+          color: "negative",
+          textColor: "white",
+          icon: "warning",
+          message: "Ha ocurrido un error, inténtalo nuevamente",
+        });
+      });
     },
 
     /*

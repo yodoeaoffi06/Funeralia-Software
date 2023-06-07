@@ -71,7 +71,58 @@ export default {
 
   methods: {
     onSubmit() {
+      this.loading = true;
+
+      var app = this;
+
+      this.$auth.login( {
+        data: {
+          email: app.email.replace(/<[^>]*>?/gm, ""),
+          password: app.password.replace(/<[^>]*>?/gm, ""),
+        },
+        success: function (res) {
+          app.success = true;
+        },
+      })
+      .then((res) => {})
+      .catch((error) => {
+        this.loading = false;
+        console.log(error);
+        this.$q.notify({
+          color: "red-5",
+          textColor: "white",
+          icon: "warning",
+          message: "Ha ocurrido un error"
+        });
+      });
     },
+    /*
+    onSubmit() {
+      this.loading = true;
+      var app = this;
+      this.$auth
+        .login({
+          data: {
+            email: app.email.replace(/<[^>]*>?/gm, ""),
+            password: app.password.replace(/<[^>]*>?/gm, ""),
+          },
+          success: function (res) {
+            app.success = true;
+          },
+        })
+        .then((res) => {})
+        .catch((error) => {
+          this.loading = false;
+          console.log(error);
+          this.$q.notify({
+            color: "red-5",
+            textColor: "white",
+            icon: "warning",
+            message: "Ha ocurrido un error",
+          });
+        });
+    },
+    */
   },
 };
 </script>
