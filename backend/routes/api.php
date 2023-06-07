@@ -37,6 +37,7 @@ Route::prefix('f')->group(function () {
         Route::post('create-client', 'App\Http\Controllers\ServicesController@createClient');
         Route::post('create-service', 'App\Http\Controllers\ServicesController@createService');
         Route::post('generate-mobilary', 'App\Http\Controllers\ServicesController@generateMobilary');
+        Route::get('get-services', 'App\Http\Controllers\ServicesController@getServices');
         Route::get('service-info/{id_servicio}', 'App\Http\Controllers\ServicesController@getServiceInformation');
     })->middleware('auth:api');
 });
