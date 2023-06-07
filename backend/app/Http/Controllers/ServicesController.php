@@ -136,6 +136,49 @@ class ServicesController extends Controller
         }
     }
 
+    //Función que retorna todos los servicios
+    public function getServices()
+    {
+
+        try {
+
+            $servicios = servicio::select(
+                'id_servicio',
+                'a.tipo',
+                'b.nombre AS nombre_cliente',
+                'b.telefono AS telefono_cliente',
+                'b.direccion',
+                'fecha_entrega',
+                'fecha_recogida'
+            )->join('tipo_servicio AS a', 'servicio.id_tipo_Servicio', '=', 'a.id_tipo_servicio')
+            ->join('cliente AS b', 'servicio.id_cliente', '=', 'b.id_cliente')
+            ->get();
+
+            $servicios->each(function ($item) {
+                // Lógica personalizada para agregar el valor adicional
+                $item->mobiliario_total = mobiliario_total::select(
+                    'a.nombre AS mobiliario',
+                    'cantidad'
+                )->join('mobiliario AS a', 'mobiliario_total.id_mobiliario', '=', 'a.id_mobiliario')
+                ->where('id_servicio', $item->id_servicio)
+                ->get();
+            });
+
+            if($servicios) {
+
+                return response()->json([
+                    'message'       => 'Se han obtenido los servicios',
+                    'data'  => $servicios
+                ], 200);
+            }
+
+            return response()->json(['message' => 'No hay servicios'], 400);
+        } catch(Exception $e) {
+
+            return response()->json(['error' => $e], 400);
+        }
+    }
+
     //Función para obtener la información de un servicio.
     public function getServiceInformation($id_servicio)
     {
@@ -152,23 +195,23 @@ class ServicesController extends Controller
                 'fecha_recogida'
             )->join('tipo_servicio AS a', 'servicio.id_tipo_Servicio', '=', 'a.id_tipo_servicio')
             ->join('cliente AS b', 'servicio.id_cliente', '=', 'b.id_cliente')
+            ->where('id_servicio', $id_servicio)
             ->first();
 
             if($servicio) {
 
-                $mobiliario = mobiliario_total::select(
+                $servicio->mobiliario_total = mobiliario_total::select(
                     'a.nombre AS mobiliario',
                     'cantidad'
                 )->join('mobiliario AS a', 'mobiliario_total.id_mobiliario', '=', 'a.id_mobiliario')
                 ->where('id_servicio', $id_servicio)
                 ->get();
 
-                if($mobiliario) {
+                if($servicio->mobiliario_total) {
 
                     return response()->json([
                         'message'       => 'Se ha obtenido el servicio',
-                        'data_service'  => $servicio,
-                        'data_mobilary' => $mobiliario
+                        'data'  => $servicio
                     ], 200);
                 }
 
